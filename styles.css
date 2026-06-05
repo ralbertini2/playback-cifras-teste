@@ -217,3 +217,42 @@ body.stage .main{--player:188px;--top:54px}.main{grid-template-rows:var(--top) m
   .compact-controls .control-tile{height:58px;border-radius:13px}
   .compact-controls .control-tile span:last-child{font-size:12px}
 }
+
+
+/* Playback Cifras v12.2 — ajustes finos
+   - Menu lateral acima do rodapé no mobile
+   - Rodapé com respiro maior na base
+   - Correção de proporção do PDF no zoom interno
+*/
+:root{--player:146px}
+.sidebar{z-index:120}
+.sidebar.open{z-index:120}
+.playerbar-v12{
+  padding-bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px));
+  z-index:40;
+}
+.pdf-scroll{
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+.pdf-scroll .pdf-page{
+  max-width:none !important;
+  width:auto;
+  height:auto;
+}
+@media(max-width:900px){
+  :root{--player:144px}
+  .sidebar{z-index:120;width:min(88vw,360px);max-width:360px;bottom:0}
+  .sidebar.open{z-index:120}
+  .playerbar-v12{padding-bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px))}
+  .song-list{padding-bottom:36px}
+}
+@media(max-width:620px){
+  :root{--player:136px}
+  .playerbar-v12{padding-bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px))}
+  .compact-controls .control-tile{height:64px}
+}
+@media(orientation:landscape) and (max-height:620px){
+  :root{--player:118px}
+  .playerbar-v12{padding-bottom:max(18px,calc(env(safe-area-inset-bottom) + 10px))}
+}
