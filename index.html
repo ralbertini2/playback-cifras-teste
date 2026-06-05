@@ -12,10 +12,7 @@
   <div id="app" class="app">
     <aside id="sidebar" class="sidebar">
       <header class="brand">
-        <div>
-          <h1>Playback Cifras</h1>
-          <p>Google Drive • PDF + MP3</p>
-        </div>
+        <img src="logo.svg" alt="Playback Cifras" class="brand-logo" />
         <button id="toggleSidebar" class="icon-btn hide-desktop" title="Ocultar menu">☰</button>
       </header>
 
@@ -82,11 +79,22 @@
         </div>
       </section>
 
-      <footer class="playerbar">
-        <button id="prevBtn" class="nav-btn">←<span>Anterior</span></button>
-        <button id="playBtn" class="play-btn">▶</button>
-        <audio id="audio" controls preload="metadata"></audio>
-        <button id="nextBtn" class="nav-btn"><span>Próxima</span>→</button>
+      <footer class="playerbar playerbar-v12">
+        <audio id="audio" preload="metadata"></audio>
+        <div class="timeline">
+          <span id="currentTimeLabel">0:00</span>
+          <input id="seekBar" class="seekbar" type="range" min="0" max="1000" value="0" step="1" aria-label="Progresso da música" />
+          <span id="durationLabel">0:00</span>
+        </div>
+        <div class="big-controls">
+          <button id="prevBtn" class="control-tile" type="button"><span class="control-icon">|◀</span><span>Voltar</span></button>
+          <button id="playBtn" class="control-tile play-tile" type="button"><span class="control-icon">▶</span><span>Tocar</span></button>
+          <button id="rewindBtn" class="control-tile" type="button"><span class="control-icon">↶10</span><span>-10s</span></button>
+          <button id="forwardBtn" class="control-tile" type="button"><span class="control-icon">↷10</span><span>+10s</span></button>
+          <button id="repeatBtn" class="control-tile" type="button"><span class="control-icon">↻</span><span>Repetir</span></button>
+          <button id="nextBtn" class="control-tile" type="button"><span class="control-icon">▶|</span><span>Próxima</span></button>
+          <button id="playlistOpenBtn" class="control-tile" type="button"><span class="control-icon">☷</span><span>Playlist</span></button>
+        </div>
       </footer>
     </main>
   </div>

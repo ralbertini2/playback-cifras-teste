@@ -1,5 +1,5 @@
-const CACHE='playback-cifras-v11';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest'];
+const CACHE='playback-cifras-v12';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest','./logo.svg'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(

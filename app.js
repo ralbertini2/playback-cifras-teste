@@ -49,7 +49,7 @@ function init(){
 }
 
 function bindEls(){
-  ['googleBtn','logoutBtn','loginStatus','folderIdInput','pickFolderBtn','refreshBtn','clearFolderBtn','styleSelect','searchInput','songList','songTitle','songMeta','pdfFrame','pdfScroll','emptyState','audio','prevBtn','nextBtn','playBtn','stageBtn','fullscreenBtn','sidebar','toggleSidebar','showSidebar','toast','favoriteBtn','playlistSelect','newPlaylistBtn','addPlaylistBtn','deletePlaylistBtn','zoomOutBtn','zoomLabel','zoomInBtn','autoScrollBtn','speedDownBtn','speedUpBtn','speedLabel'].forEach(id=>els[id]=document.getElementById(id));
+  ['googleBtn','logoutBtn','loginStatus','folderIdInput','pickFolderBtn','refreshBtn','clearFolderBtn','styleSelect','searchInput','songList','songTitle','songMeta','pdfFrame','pdfScroll','emptyState','audio','prevBtn','nextBtn','playBtn','rewindBtn','forwardBtn','repeatBtn','playlistOpenBtn','seekBar','currentTimeLabel','durationLabel','stageBtn','fullscreenBtn','sidebar','toggleSidebar','showSidebar','toast','favoriteBtn','playlistSelect','newPlaylistBtn','addPlaylistBtn','deletePlaylistBtn','zoomOutBtn','zoomLabel','zoomInBtn','autoScrollBtn','speedDownBtn','speedUpBtn','speedLabel'].forEach(id=>els[id]=document.getElementById(id));
 }
 
 function bindEvents(){
@@ -63,6 +63,11 @@ function bindEvents(){
   els.prevBtn.addEventListener('click', prevSong);
   els.nextBtn.addEventListener('click', nextSong);
   els.playBtn.addEventListener('click', togglePlay);
+  if(els.rewindBtn) els.rewindBtn.addEventListener('click',()=>seekRelative(-10));
+  if(els.forwardBtn) els.forwardBtn.addEventListener('click',()=>seekRelative(10));
+  if(els.repeatBtn) els.repeatBtn.addEventListener('click',toggleRepeat);
+  if(els.playlistOpenBtn) els.playlistOpenBtn.addEventListener('click',()=>els.sidebar.classList.add('open'));
+  if(els.seekBar) els.seekBar.addEventListener('input', seekFromBar);
   els.stageBtn.addEventListener('click', toggleStage);
   els.fullscreenBtn.addEventListener('click', fullscreen);
   els.favoriteBtn.addEventListener('click', toggleFavorite);
@@ -77,8 +82,12 @@ function bindEvents(){
   els.speedUpBtn.addEventListener('click',()=>changeScrollSpeed(1));
   els.showSidebar.addEventListener('click',()=>els.sidebar.classList.add('open'));
   els.toggleSidebar.addEventListener('click',()=>els.sidebar.classList.remove('open'));
-  els.audio.addEventListener('play',()=>els.playBtn.textContent='⏸');
-  els.audio.addEventListener('pause',()=>els.playBtn.textContent='▶');
+  els.audio.addEventListener('play',()=>setPlayButton(true));
+  els.audio.addEventListener('pause',()=>setPlayButton(false));
+  els.audio.addEventListener('timeupdate', updateTimeline);
+  els.audio.addEventListener('loadedmetadata', updateTimeline);
+  els.audio.addEventListener('durationchange', updateTimeline);
+  els.audio.addEventListener('ended',()=>{setPlayButton(false); updateTimeline();});
   document.addEventListener('keydown', keyboard);
 }
 
@@ -485,7 +494,7 @@ function resetAudioSource(){
   els.audio.pause();
   els.audio.removeAttribute('src');
   els.audio.load();
-  els.playBtn.textContent='▶';
+  setPlayButton(false);
 }
 
 function resetPdfSource(){
@@ -527,6 +536,47 @@ function clearCurrent(){
 function prevSong(){ if(filteredSongs.length) loadSong((currentIndex-1+filteredSongs.length)%filteredSongs.length, false); }
 function nextSong(){ if(filteredSongs.length) loadSong((currentIndex+1)%filteredSongs.length, false); }
 function togglePlay(){ if(!els.audio.src) return; els.audio.paused ? els.audio.play() : els.audio.pause(); }
+
+function setPlayButton(isPlaying){
+  if(!els.playBtn) return;
+  els.playBtn.innerHTML = isPlaying
+    ? '<span class="control-icon">⏸</span><span>Pausar</span>'
+    : '<span class="control-icon">▶</span><span>Tocar</span>';
+}
+function seekRelative(seconds){
+  if(!els.audio || !els.audio.src || !Number.isFinite(els.audio.duration)) return;
+  els.audio.currentTime = Math.max(0, Math.min(els.audio.duration, els.audio.currentTime + seconds));
+  updateTimeline();
+}
+function toggleRepeat(){
+  if(!els.audio) return;
+  els.audio.loop = !els.audio.loop;
+  if(els.repeatBtn) els.repeatBtn.classList.toggle('active', els.audio.loop);
+  toast(els.audio.loop ? 'Repetição ativada.' : 'Repetição desativada.');
+}
+function seekFromBar(){
+  if(!els.audio || !Number.isFinite(els.audio.duration) || !els.seekBar) return;
+  els.audio.currentTime = (Number(els.seekBar.value) / 1000) * els.audio.duration;
+  updateTimeline();
+}
+function updateTimeline(){
+  if(!els.audio) return;
+  const duration = Number.isFinite(els.audio.duration) ? els.audio.duration : 0;
+  const current = Number.isFinite(els.audio.currentTime) ? els.audio.currentTime : 0;
+  if(els.currentTimeLabel) els.currentTimeLabel.textContent = formatTime(current);
+  if(els.durationLabel) els.durationLabel.textContent = formatTime(duration);
+  if(els.seekBar){
+    const value = duration ? Math.round((current / duration) * 1000) : 0;
+    els.seekBar.value = String(value);
+    els.seekBar.style.setProperty('--progress', `${value / 10}%`);
+  }
+}
+function formatTime(totalSeconds){
+  totalSeconds = Math.max(0, Math.floor(totalSeconds || 0));
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
 
 function toggleStage(){
   document.body.classList.toggle('stage');
