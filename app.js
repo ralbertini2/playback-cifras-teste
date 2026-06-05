@@ -540,8 +540,8 @@ function togglePlay(){ if(!els.audio.src) return; els.audio.paused ? els.audio.p
 function setPlayButton(isPlaying){
   if(!els.playBtn) return;
   els.playBtn.innerHTML = isPlaying
-    ? '<span class="control-icon">⏸</span><span>Pausar</span>'
-    : '<span class="control-icon">▶</span><span>Tocar</span>';
+    ? '<span class="control-icon pause-flat"><i></i><i></i></span><span>Pausar</span>'
+    : '<span class="control-icon play-flat"></span><span>Tocar</span>';
 }
 function seekRelative(seconds){
   if(!els.audio || !els.audio.src || !Number.isFinite(els.audio.duration)) return;

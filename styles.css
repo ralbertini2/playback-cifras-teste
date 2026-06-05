@@ -50,3 +50,170 @@ body.stage .main{--player:188px;--top:54px}.main{grid-template-rows:var(--top) m
 @media(max-width:900px){:root{--top:60px;--player:166px}.brand-logo{width:140px}.playerbar-v12{padding:8px 10px 10px}.big-controls{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:2px}.control-tile{min-width:112px;scroll-snap-align:start}.timeline{grid-template-columns:48px minmax(0,1fr) 48px;font-size:13px}}
 @media(max-width:620px){:root{--player:154px}.control-tile{min-width:96px;height:88px}.control-icon{font-size:28px}.play-tile .control-icon{font-size:36px}.control-tile span:last-child{font-size:13px}.timeline{gap:6px}.top-actions{overflow-x:auto;max-width:64vw}.brand-logo{width:128px}}
 @media(orientation:landscape) and (max-height:620px){:root{--top:52px;--player:128px}.playerbar-v12{grid-template-rows:28px 1fr;padding-top:6px}.big-controls{gap:8px}.control-tile{height:78px;border-radius:14px}.control-icon{font-size:25px}.play-tile .control-icon{font-size:32px}.control-tile span:last-child{font-size:13px}.timeline{font-size:12px}.seekbar{height:6px}.brand{padding:10px 14px}.brand-logo{width:120px}}
+
+/* Playback Cifras v12.1 — ajustes solicitados */
+.brand-logo{
+  width:154px;
+  max-width:78%;
+  height:auto;
+  object-fit:contain;
+  border-radius:8px;
+  mix-blend-mode:screen;
+}
+.sidebar{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.song-list{
+  overflow:visible;
+  flex:0 0 auto;
+  padding-bottom:24px;
+}
+
+/* Rodapé compacto: apenas Voltar, Tocar e Próxima */
+:root{--player:132px}
+.playerbar-v12{
+  position:relative;
+  z-index:40;
+  grid-template-rows:34px 1fr;
+  gap:8px;
+  padding:8px 14px 12px;
+  padding-bottom:max(12px,env(safe-area-inset-bottom));
+  overflow:hidden;
+}
+.compact-controls,
+.big-controls.compact-controls{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  max-width:720px;
+  overflow:visible;
+  padding:0;
+}
+.compact-controls .control-tile{
+  min-width:0;
+  height:74px;
+  border-radius:18px;
+  gap:6px;
+}
+.compact-controls .control-tile span:last-child{
+  font-size:16px;
+}
+.compact-controls .play-tile{
+  transform:none;
+}
+
+/* Ícones flat em CSS, sem emoji */
+.control-icon.play-flat,
+.control-icon.prev-flat,
+.control-icon.next-flat,
+.control-icon.pause-flat{
+  position:relative;
+  display:inline-block;
+  width:34px;
+  height:34px;
+  font-size:0;
+  line-height:0;
+}
+.control-icon.play-flat::before{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:5px;
+  width:0;
+  height:0;
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  border-left:18px solid #fff;
+}
+.control-icon.pause-flat i{
+  position:absolute;
+  top:5px;
+  width:9px;
+  height:24px;
+  border-radius:3px;
+  background:#fff;
+}
+.control-icon.pause-flat i:first-child{left:7px}
+.control-icon.pause-flat i:last-child{right:7px}
+.control-icon.prev-flat::before,
+.control-icon.prev-flat::after,
+.control-icon.next-flat::before,
+.control-icon.next-flat::after{
+  content:"";
+  position:absolute;
+  top:5px;
+}
+.control-icon.prev-flat::before{
+  left:2px;
+  width:5px;
+  height:24px;
+  border-radius:3px;
+  background:#fff;
+}
+.control-icon.prev-flat::after{
+  left:10px;
+  width:0;
+  height:0;
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  border-right:20px solid #fff;
+}
+.control-icon.next-flat::before{
+  right:2px;
+  width:5px;
+  height:24px;
+  border-radius:3px;
+  background:#fff;
+}
+.control-icon.next-flat::after{
+  right:10px;
+  width:0;
+  height:0;
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  border-left:20px solid #fff;
+}
+
+@media(max-width:900px){
+  :root{--player:132px}
+  .sidebar{
+    height:100dvh;
+    max-height:100dvh;
+    padding-bottom:calc(22px + env(safe-area-inset-bottom));
+  }
+  .brand-logo{width:138px;max-width:72%}
+  .playerbar-v12{padding:8px 10px 10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  .compact-controls,.big-controls.compact-controls{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+    max-width:none;
+    overflow:visible;
+  }
+  .compact-controls .control-tile{
+    min-width:0;
+    height:72px;
+    border-radius:16px;
+  }
+}
+@media(max-width:620px){
+  :root{--player:124px}
+  .timeline{grid-template-columns:44px minmax(0,1fr) 44px;font-size:13px}
+  .compact-controls,.big-controls.compact-controls{gap:8px}
+  .compact-controls .control-tile{height:66px;border-radius:15px}
+  .compact-controls .control-tile span:last-child{font-size:13px}
+  .control-icon.play-flat,.control-icon.prev-flat,.control-icon.next-flat,.control-icon.pause-flat{width:28px;height:28px}
+  .control-icon.play-flat::before{left:8px;top:4px;border-top-width:10px;border-bottom-width:10px;border-left-width:16px}
+  .control-icon.pause-flat i{top:4px;width:8px;height:20px}
+  .control-icon.pause-flat i:first-child{left:6px}.control-icon.pause-flat i:last-child{right:6px}
+  .control-icon.prev-flat::before,.control-icon.next-flat::before{top:4px;height:20px;width:4px}
+  .control-icon.prev-flat::after{top:4px;left:8px;border-top-width:10px;border-bottom-width:10px;border-right-width:17px}
+  .control-icon.next-flat::after{top:4px;right:8px;border-top-width:10px;border-bottom-width:10px;border-left-width:17px}
+}
+@media(orientation:landscape) and (max-height:620px){
+  :root{--player:106px}
+  .playerbar-v12{grid-template-rows:26px 1fr;padding-top:5px}
+  .compact-controls .control-tile{height:58px;border-radius:13px}
+  .compact-controls .control-tile span:last-child{font-size:12px}
+}
