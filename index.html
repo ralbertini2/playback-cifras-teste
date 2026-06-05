@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Playback Cifras</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0b111a" />
+</head>
+<body>
+  <div id="app" class="app">
+    <aside id="sidebar" class="sidebar">
+      <header class="brand">
+        <div>
+          <h1>Playback Cifras</h1>
+          <p>Google Drive • PDF + MP3</p>
+        </div>
+        <button id="toggleSidebar" class="icon-btn hide-desktop" title="Ocultar menu">☰</button>
+      </header>
+
+      <section class="panel">
+        <button id="googleBtn" class="primary-btn">Entrar com Google</button>
+        <button id="logoutBtn" class="ghost-btn" type="button">Sair do Google</button>
+        <div id="loginStatus" class="status">Desconectado</div>
+      </section>
+
+      <section class="panel">
+        <label>Pasta principal do Drive</label>
+        <div class="row gap">
+          <input id="folderIdInput" type="text" placeholder="ID da pasta principal" autocomplete="off" />
+        </div>
+        <button id="pickFolderBtn" class="secondary-btn">Selecionar pasta no Drive</button>
+        <button id="refreshBtn" class="secondary-btn">Atualizar biblioteca</button>
+        <button id="clearFolderBtn" class="ghost-btn">Esquecer pasta salva</button>
+        <p class="hint">Estrutura: selecione a pasta principal com subpastas por estilo ou uma pasta direta de músicas. Em cada pasta, PDF e MP3 devem ter o mesmo nome.</p>
+      </section>
+
+      <section class="panel">
+        <label>Estilo</label>
+        <select id="styleSelect"></select>
+        <label>Playlist / Evento</label>
+        <select id="playlistSelect"></select>
+        <div class="button-grid">
+          <button id="newPlaylistBtn" class="ghost-btn">Nova</button>
+          <button id="addPlaylistBtn" class="ghost-btn">Adicionar</button>
+          <button id="deletePlaylistBtn" class="ghost-btn">Excluir</button>
+        </div>
+        <input id="searchInput" type="search" placeholder="Buscar música..." />
+      </section>
+
+      <section id="songList" class="song-list"></section>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="showSidebar" class="icon-btn">☰</button>
+        <div class="now">
+          <strong id="songTitle">Nenhuma música carregada</strong>
+          <span id="songMeta"></span>
+        </div>
+        <div class="top-actions">
+          <button id="favoriteBtn" class="secondary-btn small" title="Favoritar">☆</button>
+          <button id="zoomOutBtn" class="secondary-btn small" title="Diminuir zoom do PDF">A−</button>
+          <span id="zoomLabel" class="speed-label">100%</span>
+          <button id="zoomInBtn" class="secondary-btn small" title="Aumentar zoom do PDF">A+</button>
+          <button id="autoScrollBtn" class="secondary-btn small">▶ Rolagem</button>
+          <button id="speedDownBtn" class="secondary-btn small" title="Diminuir rolagem">−</button>
+          <span id="speedLabel" class="speed-label">1x</span>
+          <button id="speedUpBtn" class="secondary-btn small" title="Aumentar rolagem">+</button>
+          <button id="stageBtn" class="secondary-btn small">Modo palco</button>
+          <button id="fullscreenBtn" class="secondary-btn small">Tela cheia</button>
+        </div>
+      </header>
+
+      <section id="viewer" class="viewer">
+        <iframe id="pdfFrame" title="Cifra PDF"></iframe>
+        <div id="pdfScroll" class="pdf-scroll" aria-label="Cifra PDF em modo rolagem"></div>
+        <div id="emptyState" class="empty-state">
+          <h2>Nenhuma música carregada</h2>
+          <p>Entre com Google e selecione a pasta principal do repertório. O app lembra a pasta neste dispositivo e atualiza automaticamente ao abrir.</p>
+        </div>
+      </section>
+
+      <footer class="playerbar">
+        <button id="prevBtn" class="nav-btn">←<span>Anterior</span></button>
+        <button id="playBtn" class="play-btn">▶</button>
+        <audio id="audio" controls preload="metadata"></audio>
+        <button id="nextBtn" class="nav-btn"><span>Próxima</span>→</button>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/api.js" async defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
